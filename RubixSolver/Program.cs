@@ -10,7 +10,10 @@ namespace RubixSolver
     {
         static void Main(string[] args)
         {
-            Console.WriteLine();
+            string input = Console.ReadLine();
+            Console.WriteLine(input);
+
+            Console.ReadLine();
         }
     }
 }
