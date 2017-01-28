@@ -46,9 +46,10 @@ namespace RubixSolver
         private int dimensions;
 
         public static void main(string[] args) {
-            Face face = new RubixSolver.Face( 3, Colours.BLUE );
+            Face face = new RubixSolver.Face( 3, Colours.GREEN );
+            Face face1 = new RubixSolver.Face(3, Colours.RED);
             face.printFace();
-
+            face1.printFace();
 
 
         }
