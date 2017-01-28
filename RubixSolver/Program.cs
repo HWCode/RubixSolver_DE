@@ -10,8 +10,8 @@ namespace RubixSolver
     {
         static void Main(string[] args)
         {
-            string input = Console.ReadLine();
-            Console.WriteLine(input);
+            Face face = new RubixSolver.Face(3, Colours.BLUE);
+            face.printFace();
 
             Console.ReadLine();
         }
