@@ -8,12 +8,17 @@ namespace RubixSolver
 {
     class Program
     {
+
         static void Main(string[] args)
         {
-            Face face0 = new RubixSolver.Face(3, Colours.GREEN);
-            Face face1 = new RubixSolver.Face(3, Colours.RED);
-            face0.printFace();
-            face1.printFace();
+            RubixCube myCube = new RubixCube(2);
+
+            myCube.getFace(4).rotateFace(Direction.CCW);
+            Face newFace = new RubixSolver.Face(4);
+            newFace.printFace();
+            Console.WriteLine();
+            newFace.rotateFace(Direction.CCW);
+            newFace.printFace();
 
             Console.ReadLine();
         }

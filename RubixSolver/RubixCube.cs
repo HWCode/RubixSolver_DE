@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RubixSolver
 {
-    enum Colours{ WHITE, RED, YELLOW, ORANGE, GREEN, BLUE }
+    enum Colours{ WHITE, RED, YELLOW, ORANGE, GREEN, BLUE, BLANK }
     enum Axis {X_AXIS, Y_AXIS, Z_AXIS }
     enum Direction {CW=1,CCW=-1 }
     class RubixCube
@@ -23,6 +23,11 @@ namespace RubixSolver
             cube[5] = new Face(dimensions, Colours.BLUE);
 
         }
+        //TODO have input be an enum to restric use, or use switch
+        public Face getFace(int face) {
+            return this.cube[face];
+
+        }
 
         private void initializeFaces( Colours[,] face, Colours colour ){
 
@@ -34,10 +39,25 @@ namespace RubixSolver
             }
         }
 
-        public void rotateSlice(Face face,Direction dir, Axis axis ) { }
+        public void rotateSlice(Face face, Direction dir, Axis axis ) { }
 
         //Only used on edge cases of slice rotation
-        private void rotateFace() { }
+        private void rotateFace(Face face) {
+            int dim = face.getDimensions();
+            Face temp = new Face( dim, Colours.BLANK);
+
+
+            for (int column = 0; column < dim; ++column)
+            {
+
+                for (int row = 0; row < dim; ++row)
+                {
+                    //Console.Write( temp[1, 2]); //= face.getFaceColour(row,dim);
+                }
+            }
+
+
+        }
     }
 
     class Face {
@@ -45,24 +65,37 @@ namespace RubixSolver
         private Colours colour;
         private int dimensions;
 
-        public static void main(string[] args) {
-            Face face = new RubixSolver.Face( 3, Colours.GREEN );
-            Face face1 = new RubixSolver.Face(3, Colours.RED);
-            face.printFace();
-            face1.printFace();
 
-
-        }
-        
-
+        /*Constructor
+         */
         public Face(int dim, Colours colour) {
             this.dimensions = dim;
-            this.face = new Colours[dim,dim];
+            this.face = new Colours[dim, dim];
             this.colour = colour;
             fillArray();
         }
 
+       
+        //Constructor for a random face of N dimensions
+        public Face(int dim) {
+            this.dimensions = dim;
+            this.face = new Colours[dim,dim];
+            Random rnd = new Random();
 
+            for (int column = 0; column < dimensions; ++column)
+            {
+                for (int row = 0; row < dimensions; ++row)
+                {
+                    face[row, column] = (Colours)rnd.Next(0,5);
+                }
+            }
+
+
+        }
+
+        /**
+         Fills 2D array with one colour
+             */
         private void fillArray() {
 
             for (int column = 0; column < dimensions; ++column)
@@ -72,6 +105,14 @@ namespace RubixSolver
                     face[row, column] = colour;
                 }
             }
+        }//end of fill array
+
+        public int getDimensions() {
+            return this.dimensions;
+        }//end of getDeminsions
+
+        public Colours getFaceColour(int x,int y) {
+            return this.face[x, y];
         }
 
         public void printFace() {
@@ -81,14 +122,51 @@ namespace RubixSolver
                 Console.Write("[");
                 for (int row = 0; row < dimensions; ++row)
                 {
-                    Console.Write("{0}",face[row, column]);
-                    if (row !=dimensions -1)
+                    Console.Write("{0}", face[row, column]);
+                    if (row != dimensions - 1)
                     {
                         Console.Write(", ");
                     }
                 }
                 Console.Write("]");
+                Console.WriteLine();
             }
+
+        }//end of print face
+
+        /**/
+        public void rotateFace(Direction direction) {
+            int dim = this.dimensions;
+            //Face temp = new Face(dim, Colours.BLANK);
+            Colours[,] temp = new Colours[dim, dim];
+
+            for (int column = 0; column < dim; ++column)
+            {
+
+                for (int row = 0; row < dim; ++row)
+                {
+                    if (direction == Direction.CW)
+                        temp[column, row] = face[row, (dim - column - 1)];
+                    else if (direction == Direction.CCW) {
+                        temp[column, row] = face[(dim-row-1), column];
+                    }
+                
+                }
+            }
+            this.face = temp;
+        }
+
+        /*Creates a random face then rotates it 4 times
+         * 
+         * Creates random face for testing
+         * TODO-At each rotatition equality between rotation and original is check
+         * TODO-Only the 4th oen has to pass.
+         */
+        public static Face randomFace() {
+
+
+
+            return new Face(3, Colours.BLANK);
 
         }
 
