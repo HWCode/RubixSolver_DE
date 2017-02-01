@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace RubixSolver
 {
     enum Colours{ WHITE, RED, YELLOW, ORANGE, GREEN, BLUE, BLANK }
+    enum Faces { FACE0, FACE1, FACE2, FACE3, FACE4, FACE5}
     enum Axis {HORIZONTAL_AXIS, VERTICAL_AXIS }
     enum Direction {CW=1,CCW=-1 }
     //enum Slices { COLUMN, ROW}
@@ -49,8 +50,10 @@ namespace RubixSolver
             }
         }
 
-        public void rotateSlice(Direction dir, Axis axis, int level ) {
-            //Colours[] transferSlice = cube
+        public void rotateSlice(Faces face, Direction dir, Axis axis, int level ) {
+
+
+            //cube[(int)face].getLinkedFace();
 
 
         }
