@@ -17,7 +17,10 @@ namespace RubixSolver
             Face newFace = new RubixSolver.Face(4);
             newFace.printFace();
             Console.WriteLine();
-            newFace.rotateFace(Direction.CCW);
+            //newFace.rotateFace(Direction.CCW);
+            Colours[] arraytes = newFace.getSlice(1,Axis.HORIZONTAL_AXIS);
+            newFace.replaceSlice(arraytes,0,Axis.VERTICAL_AXIS);
+
             newFace.printFace();
 
             Console.ReadLine();
