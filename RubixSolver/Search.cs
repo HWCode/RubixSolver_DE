@@ -9,19 +9,30 @@ namespace RubixSolver
     enum SearchName { BREADTH_FIRST, A_STAR }
 
     interface SearchInterface {
-        void search();
+        void search(Object start, Object goal);
     }
 
 
 
     class BreadthFirst  : SearchInterface {
-        public void search() {
+        public void search(Object start,Object goal) {
             Console.WriteLine("BreadthFirstSearch");
+            /*
+             *
+             * 
+             * 
+             * 
+             * 
+             */
+
+
+
+
         }
     }
 
     class AStarSearch   : SearchInterface {
-        public void search() {
+        public void search(Object start, Object goal) {
             Console.WriteLine("AStarSearch");
         }
     }

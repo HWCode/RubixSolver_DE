@@ -8,10 +8,10 @@ namespace RubixSolver
 {
     enum Colours{ WHITE, RED, YELLOW, ORANGE, GREEN, BLUE, BLANK }
     enum Faces { FACE0, FACE1, FACE2, FACE3, FACE4, FACE5}
-    enum Axis {HORIZONTAL_AXIS, VERTICAL_AXIS }
+    enum Axis {HRZ_AXIS, VERT_AXIS }
     enum Direction {CW=1,CCW=-1 }
     //enum Slices { COLUMN, ROW}
-    class RubixCube
+    class RubixCube : Searchable
     {
         
          /*     [G/5]
@@ -28,16 +28,16 @@ namespace RubixSolver
             cube[4] = new Face(dimensions, Colours.GREEN);
             cube[5] = new Face(dimensions, Colours.BLUE);
 
-            cube[0].setLinks(cube[3],   cube[1], cube[4], cube[5]);
-            cube[1].setLinks(cube[0],   cube[2], cube[4], cube[5]);
-            cube[2].setLinks(cube[1],   cube[3], cube[4], cube[5]);
-            cube[3].setLinks(cube[2],   cube[0], cube[4], cube[5]);
-            cube[4].setLinks(cube[3],   cube[1], cube[0], cube[2]);
-            cube[5].setLinks(cube[1],   cube[3], cube[2], cube[0]);
+            cube[0].setLinks(cube[3],   cube[1], cube[5], cube[4]);//white
+            cube[1].setLinks(cube[0],   cube[2], cube[4], cube[5]);//red
+            cube[2].setLinks(cube[1],   cube[3], cube[4], cube[5]);//yellow
+            cube[3].setLinks(cube[2],   cube[0], cube[4], cube[5]);//orange
+            cube[4].setLinks(cube[2],   cube[1], cube[0], cube[2]);//green
+            cube[5].setLinks(cube[1],   cube[2], cube[2], cube[0]);//blue
         }
         //TODO have input be an enum to restric use, or use switch
         public Face getFace(int face) {
-            return this.cube[face];
+            return this.cube[face%6];
         }
 
         private void initializeFaces( Colours[,] face, Colours colour ){
@@ -50,11 +50,22 @@ namespace RubixSolver
             }
         }
 
+
+        /*
+         * 
+         * 
+             */
         public void rotateSlice(Faces face, Direction dir, Axis axis, int level ) {
 
+            Colours[] array1 = cube[(int)face].getSlice(level, axis);
+            Colours[] array2 = cube[(int)face].getLink(axis, dir).getSlice(level, axis);
+            Colours[] array3 = cube[(int)face].getLink(axis, dir).getLink(axis, dir).getSlice(level, axis);
+            Colours[] array4 = cube[(int)face].getLink(axis, dir).getLink(axis, dir).getLink(axis, dir).getSlice(level, axis);
 
-            //cube[(int)face].getLinkedFace();
-
+            cube[(int)face].getLink(axis, dir).replaceSlice(array1, level, axis);
+            cube[(int)face].getLink(axis, dir).getLink(axis, dir).replaceSlice(array2, level, axis);
+            cube[(int)face].getLink(axis, dir).getLink(axis, dir).getLink(axis, dir).replaceSlice(array3, level, axis);
+            cube[(int)face].getLink(axis, dir).getLink(axis, dir).getLink(axis, dir).getLink(axis, dir).replaceSlice(array4, level, axis);
 
         }
         private void columnSlice(Direction direction, int level) { }
@@ -102,19 +113,24 @@ namespace RubixSolver
             this.rowCW = right;
         }
 
-        public Face getLinkedFace(int i) {
-            switch (i) {
-                case 1:
-                    return columnCCW;
-                case 2:
-                    return columnCW;
-                case 3:
-                    return rowCCW;
-                case 4:
-                    return rowCW;
-                default:return new Face(3,Colours.BLANK);
+        public Face getLink(Axis axis, Direction direction) {
+            switch (axis) {
+                case Axis.HRZ_AXIS:
+                    if (direction == Direction.CW)
+                        return rowCW;
+                    else
+                        return rowCCW; 
+
+                case Axis.VERT_AXIS:
+                    if (direction == Direction.CW)
+                        return columnCW;
+                    else
+                        return columnCCW;
+                default:return null;
             }
         }
+
+        public void compareFaces() { }
 
        
         //Constructor for a random face of N dimensions
@@ -163,7 +179,7 @@ namespace RubixSolver
                 Console.Write("[");
                 for (int row = 0; row < dimensions; ++row)
                 {
-                    Console.Write("{0}", face[row, column]);
+                    Console.Write("{0}", face[column, row]);
                     if (row != dimensions - 1)
                     {
                         Console.Write(", ");
@@ -207,13 +223,13 @@ namespace RubixSolver
             Colours[] slice = new Colours[this.dimensions];
 
             switch (axis) {
-                case Axis.VERTICAL_AXIS:
+                case Axis.VERT_AXIS:
                     for (int column =0;column<this.dimensions;++column) {
                         slice[column] = face[column, level];
                     }
                     break;
 
-               case Axis.HORIZONTAL_AXIS:
+               case Axis.HRZ_AXIS:
                     for (int row = 0; row < this.dimensions; ++row)
                     {
                         slice[row] = face[level, row];
@@ -229,14 +245,14 @@ namespace RubixSolver
         public void replaceSlice(Colours[] insertSlice, int level, Axis axis) {
             switch (axis)
             {
-                case Axis.VERTICAL_AXIS:
+                case Axis.VERT_AXIS:
                     for (int column = 0; column < this.dimensions; ++column)
                     {
                         face[column,level] = insertSlice[column];
                     }
                     break;
 
-                case Axis.HORIZONTAL_AXIS:
+                case Axis.HRZ_AXIS:
                     for (int row = 0; row < this.dimensions; ++row)
                     {
                         face[level,row] = insertSlice[row];
