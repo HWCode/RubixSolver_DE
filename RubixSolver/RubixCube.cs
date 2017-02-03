@@ -51,10 +51,7 @@ namespace RubixSolver
         }
 
 
-        /*
-         * 
-         * 
-             */
+
         public void rotateSlice(Faces face, Direction dir, Axis axis, int level ) {
 
             Colours[] array1 = cube[(int)face].getSlice(level, axis);
@@ -72,21 +69,37 @@ namespace RubixSolver
         private void rowSlice(Direction direction, int level) { }
 
         //Only used on edge cases of slice rotation
-        private void rotateFace(Face face) {
-            int dim = face.getDimensions();
-            Face temp = new Face( dim, Colours.BLANK);
+        private void rotateFace(Faces face, Direction direction) {
 
 
-            for (int column = 0; column < dim; ++column)
-            {
 
-                for (int row = 0; row < dim; ++row)
-                {
-                    //Console.Write( temp[1, 2]); //= face.getFaceColour(row,dim);
-                }
+        }
+
+        /* This simplefies movement along
+         * 
+         * 
+         * 
+             */
+        public void move(int move) {
+            Random rnd = new Random();
+            int level = rnd.Next(0, this.getFace(1).getDimensions()-1);
+            string encode = "";
+
+            switch (move) {
+                case 1: this.rotateSlice(Faces.FACE0, Direction.CW, Axis.HRZ_AXIS, level);
+                    
+                    break;
+                //case 2;
+
             }
 
 
+        }
+
+        public bool compare(Searchable srch)
+        {
+
+            return false;
         }
     }
 

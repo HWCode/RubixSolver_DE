@@ -8,6 +8,7 @@ namespace RubixSolver
 {
     interface Searchable
     {
-
+        void move(int move);
+        bool compare(Searchable srch);
     }
 }
