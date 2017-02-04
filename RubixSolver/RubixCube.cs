@@ -35,22 +35,11 @@ namespace RubixSolver
             cube[4].setLinks(cube[2],   cube[1], cube[0], cube[2]);//green
             cube[5].setLinks(cube[1],   cube[2], cube[2], cube[0]);//blue
         }
-        //TODO have input be an enum to restric use, or use switch
+        //Returns face at index face. Uses mode to prevent stupid numbers from breaking it
+        
         public Face getFace(int face) {
             return this.cube[face%6];
         }
-
-        private void initializeFaces( Colours[,] face, Colours colour ){
-
-            for (int column = 0; column < face.Length; ++column) {
-
-                for (int row = 0; row <face.Length; ++row) {
-                    face[column, row] = colour;
-                }
-            }
-        }
-
-
 
         public void rotateSlice(Faces face, Direction dir, Axis axis, int level ) {
 
@@ -94,12 +83,12 @@ namespace RubixSolver
          * 
          * 
              */
-        public void move(int move) {
+        public void move(int id) {
             Random rnd = new Random();
             int level = rnd.Next(0, this.getFace(1).getDimensions()-1);
             string encode = "";
 
-            switch (move) {
+            switch (id) {
                 case 1: this.rotateSlice(Faces.FACE0, Direction.CW, Axis.HRZ_AXIS, level);
                     
                     break;
