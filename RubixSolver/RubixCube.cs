@@ -64,16 +64,30 @@ namespace RubixSolver
             cube[(int)face].getLink(axis, dir).getLink(axis, dir).getLink(axis, dir).replaceSlice(array3, level, axis);
             cube[(int)face].getLink(axis, dir).getLink(axis, dir).getLink(axis, dir).getLink(axis, dir).replaceSlice(array4, level, axis);
 
+            if (axis == Axis.HRZ_AXIS)
+            {
+                if ((level == (cube[1].getDimensions() - 1)) || (level == 0))
+                {
+                    if (level == 0)
+                        cube[(int)face].getLink(Axis.VERT_AXIS, Direction.CW).rotateFace(dir);
+                    if (level == (cube[1].getDimensions() - 1))
+                        cube[(int)face].getLink(Axis.VERT_AXIS, Direction.CCW).rotateFace(dir);
+                }
+            }
+            else {
+                if ((level == (cube[1].getDimensions() - 1)) || (level == 0))
+                {
+                    if (level == 0)
+                        cube[(int)face].getLink(Axis.HRZ_AXIS, Direction.CW).rotateFace(dir);
+                    if (level == (cube[1].getDimensions() - 1))
+                        cube[(int)face].getLink(Axis.HRZ_AXIS, Direction.CCW).rotateFace(dir);
+                }
+
+
+            }
+
         }
-        private void columnSlice(Direction direction, int level) { }
-        private void rowSlice(Direction direction, int level) { }
-
-        //Only used on edge cases of slice rotation
-        private void rotateFace(Faces face, Direction direction) {
-
-
-
-        }
+ 
 
         /* This simplefies movement along
          * 
@@ -92,15 +106,43 @@ namespace RubixSolver
                 //case 2;
 
             }
+        }//move
 
+        public bool isRubixSolved() {
+            bool one, two, three, four, five, six;
+            one     = this.cube[0].testFace();
+            two     = this.cube[1].testFace();
+            three   = this.cube[2].testFace();
+            four    = this.cube[3].testFace();
+            five    = this.cube[4].testFace();
+            six     = this.cube[5].testFace();
 
+            return one && two && three && four && five && six;
         }
 
         public bool compare(Searchable srch)
         {
+            RubixCube n = (RubixCube)srch;
+            bool compare = true;
+
+            for (int sides = 0; 6>sides;++sides) {
+                for (int row = 0; ;++row) {
+                    for (int column = 0; ;++column) {
+
+                        if (this.cube[sides].getSquareColour(column, row) != n.cube[sides].getSquareColour(column, row)  ) ;
+                    }
+                }
+
+            }
+
+            return compare;
+
+
 
             return false;
         }
+
+        
     }
 
     class Face {
@@ -143,7 +185,28 @@ namespace RubixSolver
             }
         }
 
-        public void compareFaces() { }
+        /*
+         * Checks to see if all squars in face match its starting colour
+         */
+        public bool testFace() {
+            bool compare = true;
+
+            for (int column = 0; column < dimensions; ++column)
+            {
+                for (int row = 0; row < dimensions; ++row)
+                {
+                    if (this.getSquareColour(column, row) != this.colour)
+                    {
+                        compare = false;
+                        break;
+                    }
+
+                }
+            }
+
+
+            return compare;
+        }
 
        
         //Constructor for a random face of N dimensions

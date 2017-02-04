@@ -12,7 +12,19 @@ namespace RubixSolver
         static void Main(string[] args)
         {
 
-   
+            RubixCube cube = new RubixCube(3);
+            RubixCube goal = new RubixCube(3);
+            cube.rotateSlice(Faces.FACE0,Direction.CW,Axis.HRZ_AXIS,1);
+            printAllFaces(cube);
+            Console.WriteLine("-----------------");
+            cube.rotateSlice(Faces.FACE0, Direction.CW, Axis.VERT_AXIS, 2);
+            printAllFaces(cube);
+            //cube.rotateSlice(Faces.FACE0, Direction.CW, Axis.VERT_AXIS, 0);
+            //cube.rotateSlice(Faces.FACE4, Direction.CCW, Axis.HRZ_AXIS, 1);
+            //cube.rotateSlice(Faces.FACE1, Direction.CW, Axis.HRZ_AXIS, 0);
+
+            //BreadthFirst breadth = new BreadthFirst();
+            // breadth.search(cube, goal);
 
             Console.ReadLine();
 

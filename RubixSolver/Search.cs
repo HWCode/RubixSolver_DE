@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace RubixSolver
 {
-    enum SearchName { BREADTH_FIRST, A_STAR }
 
     interface SearchInterface {
         void search(Searchable start, Searchable goal);
@@ -16,42 +15,43 @@ namespace RubixSolver
 
     class BreadthFirst  : SearchInterface {
         public void search(Searchable start, Searchable goal) {
+            //Contains what the algorithm is going to be searching
             Queue<Searchable> myQueue = new Queue<Searchable>();
+            //The set keeps track of vertices that have been visited.
             HashSet<Searchable> mySet = new HashSet<Searchable>();
+
+            Searchable parent = null;
+
             myQueue.Enqueue(goal);
 
             Searchable current;
+                
+                while (myQueue.Count != 0) {
+                    current = myQueue.Dequeue();
+                    if ( current.compare(goal) ) {
+                    //return current;
+                    break;
 
-            while (myQueue.Count != 0) {
-                current = myQueue.Dequeue();
-                if ( current.compare(goal) ) {
-                    //return current.dequeue();
-                }
-
-                foreach (Searchable n in myQueue) {
-                    if ( !mySet.Contains(n) ) {
-                        mySet.Add(n);
-                        //
-                        myQueue.Enqueue(n);
                     }
-
+                
+                    foreach (Searchable n in myQueue) {
+                        if ( !mySet.Contains(n) ) {
+                            mySet.Add(n);
+                            parent = current;
+                            myQueue.Enqueue(n);
+                        }
+                    }//foreach
                 }
-
-
-            }
- 
-            int i = 1;
-            start.move(i);
-
-
-
-
         }
-    }
+        
+    }//searchinterface
 
     class AStarSearch   : SearchInterface {
         public void search(Searchable start, Searchable goal) {
-            Console.WriteLine("AStarSearch");
+           // ArrayList st = new ArrayList();
+
+
         }
+
     }
 }
