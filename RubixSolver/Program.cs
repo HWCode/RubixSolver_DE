@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace RubixSolver
 {
     class Program
@@ -11,9 +13,13 @@ namespace RubixSolver
 
         static void Main(string[] args)
         {
+            miscellaneous.Perceptron percept = new miscellaneous.Perceptron(3);
+            float[] point = { 6, -12, 1 };
+            int result = percept.feedForward(point);
+            Console.WriteLine("The answer is {0}.", result);
+            Console.ReadLine();
+            //RubixCube cube = new RubixCube(3);
 
-            RubixCube cube = new RubixCube(3);
-    
 
 
         }

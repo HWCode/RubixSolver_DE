@@ -7,8 +7,14 @@ using System.Threading.Tasks;
 namespace RubixSolver
 {
     class Formula
-    {
+    {   
+        //This is the first derivative of the tanh(x) function
+        public static double activationFunc(float input) {
+            double tanh = Math.Tanh(input);
+            return 1-tanh*tanh;
+        }
         public static int NeuralNetworkError() {
+            
             return 0;
         }
 
